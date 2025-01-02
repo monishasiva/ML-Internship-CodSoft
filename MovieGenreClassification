@@ -1,0 +1,72 @@
+#Import libraries
+
+import numpy as np 
+import pandas as pd 
+import matplotlib.pyplot as plt
+import seaborn as sns 
+
+import re
+import string 
+import nltk 
+
+from nltk.corpus import stopwords 
+from nltk.stem import LancasterStemmer 
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.svm import SVC
+from sklearn.naive_bayes import MultinomialNB
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score, classification_report
+
+#Load data
+
+train_data = pd.read_csv("train_data.csv", sep=":::", names=["TITLE", "GENRE", "DESCRIPTION"], engine="python")
+train_data
+train_data.info()
+train_data.describe()
+
+test_data = pd.read_csv("test_data.csv", sep=":::",  names=["ID","TITLE","DESCRIPTION"], engine="python")
+test_solution = pd.read_csv("test_data_solution.csv", sep=":::", names=["TITLE", "GENRE", "DESCRIPTION"], engine="python")
+test_solution.head()
+
+test_data.shape
+test_data.head()
+test_data.info()
+
+sns.displot(train_data.GENRE, kde =True, color = "brown")
+plt.xticks(rotation=98);
+plt.show()
+
+plt.figure(figsize = (14,10))
+count1=train_data.GENRE.value_counts()
+sns.barplot(x=count1,y=count1.index,orient='h',color='green')
+plt.xlabel('Count') 
+plt.ylabel('movie type') 
+plt.title('Movie Genre Plot', color = 'darkred')
+plt.xticks(rotation=90);
+plt.show()
+
+genre_counts = test_solution['GENRE'].value_counts()
+plt.figure(figsize=(8, 7))  # Set the figure size
+plt.pie(genre_counts, labels=genre_counts.index, autopct='%1.1f%%', startangle=140, colors=plt.cm.Paired.colors)
+plt.title('Distribution of Movie Genres',color = 'darkblue')
+plt.axis('equal')
+plt.show()
+
+#Data Preprocessing
+
+X_test_data = vectorize.transform(test_data["TextCleaning"])
+X_test_data.shape
+test_solution.shape
+X_train_tfidf.shape
+y_train.shape
+
+#Train the model
+
+NB_model = MultinomialNB()
+NB_model.fit(X_train_tfidf, y_train)
+
+y_test_solution = test_solution['GENRE']
+y_pred = NB_model.predict(X_test_data)
+
+print("Accuracy Score:", accuracy_score(y_test_solution, y_pred))
+print("Classification Report:", classification_report(y_test_solution, y_pred))
